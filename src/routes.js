@@ -4,7 +4,6 @@ import HomePage from 'pages/HomePage';
 import LoginPage from 'pages/LoginPage';
 import LogoutPage from 'pages/LogoutPage';
 
-console.log(withAuth);
 const routes = [
   {
     path: '/login',

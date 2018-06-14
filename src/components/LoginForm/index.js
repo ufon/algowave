@@ -24,7 +24,6 @@ class LoginForm extends Component {
 
   render() {
     const { isAuthenticated, isLoading, hasErrors, errorInfo } = this.props;
-    console.log(this.state);
     return (
       <div className={styles.login}>
         {isAuthenticated && <Redirect to="/" />}
@@ -39,9 +38,11 @@ class LoginForm extends Component {
             <input
               type="text"
               onChange={e => this.setState({ email: e.target.value })}
+              placeholder="email"
             />
             <input
               type="password"
+              placeholder="pass"
               onChange={e => this.setState({ pwd: e.target.value })}
             />
             <button

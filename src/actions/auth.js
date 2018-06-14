@@ -38,7 +38,7 @@ const login = (name, pass) => dispatch => {
   dispatch(request());
 
   return fetch(`${API_URL}/login`, options)
-    .then(response => response.json(), error => dispatch(failure(error)))
+    .then(response => response.json())
     .then(user => {
       console.log(user);
       if (user.profile) {
@@ -50,7 +50,8 @@ const login = (name, pass) => dispatch => {
         dispatch(failure(user.error));
       }
       return user.profile;
-    });
+    })
+    .catch(error => dispatch(failure(error.toString())));
 };
 
 const logout = () => {
