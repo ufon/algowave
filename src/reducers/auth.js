@@ -1,11 +1,19 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from 'constants/ActionTypes';
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  LOGOUT_REQUEST
+} from 'constants/ActionTypes';
+
+const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
-  accessToken: null,
-  isAuthenticated: false,
+  accessToken: user !== null ? user.access_token : null,
+  isAuthenticated: user !== null,
   isLoading: false,
   hasErrors: false,
-  user: null
+  errorInfo: '',
+  user: user !== null ? user : null
 };
 
 export default function(state = initialState, action) {
@@ -18,18 +26,18 @@ export default function(state = initialState, action) {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        accessToken: action.payload,
         isAuthenticated: true,
         isLoading: false,
-        user: action.user
+        user: action.payload
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         hasErrors: true,
+        errorInfo: action.payload,
         isLoading: false
       };
-    case LOGOUT:
+    case LOGOUT_REQUEST:
       return {
         ...initialState
       };

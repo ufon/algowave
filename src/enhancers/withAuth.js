@@ -5,7 +5,11 @@ import { Redirect } from 'react-router-dom';
 
 export default WrappedComponent => {
   const WithAuthentication = props =>
-    !props.isAuthenticated ? <Redirect to="/login" /> : <WrappedComponent {...props} />;
+    !props.isAuthenticated ? (
+      <Redirect to="/login" />
+    ) : (
+      <WrappedComponent {...props} />
+    );
 
   WithAuthentication.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired

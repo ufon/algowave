@@ -84,9 +84,17 @@
     "prettier/prettier": [
       "error",
       {
+        "useTabs": false,      
+        "printWidth": 80,      
+        "tabWidth": 2,         
+        "singleQuote": true,  
+    
         "trailingComma": "none",
-        "singleQuote": true,
-        "printWidth": 120
+    
+        "jsxBracketSameLine": false,
+    
+        "parser": "babylon",
+
       }
     ],
     "jsx-a11y/href-no-hash": "off",

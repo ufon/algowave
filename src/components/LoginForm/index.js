@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { login } from 'actions/auth';
+import styles from './styles.scss';
 
 class LoginForm extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
-    hasErrors: PropTypes.bool.isRequired
+    hasErrors: PropTypes.bool.isRequired,
+    errorInfo: PropTypes.string.isRequired,
+    submit: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -20,24 +22,35 @@ class LoginForm extends Component {
     };
   }
 
-  submit = (username, password) => {
-    console.log(login(username, password));
-  };
-
   render() {
-    const { isAuthenticated, isLoading, hasErrors } = this.props;
+    const { isAuthenticated, isLoading, hasErrors, errorInfo } = this.props;
     console.log(this.state);
     return (
-      <div className="login">
-        {isAuthenticated && <h2>Bienvenue</h2>}
+      <div className={styles.login}>
+        {isAuthenticated && <Redirect to="/" />}
 
-        {!isLoading && hasErrors && <span>"Username and password does not match."</span>}
+        {isLoading && <div className={styles.success}>loading</div>}
+
+        {!isLoading &&
+          hasErrors && <div className={styles.danger}>{errorInfo}</div>}
 
         {!isAuthenticated && (
           <div>
-            <input type="text" onChange={e => this.setState({ email: e.target.value })} />
-            <input type="password" onChange={e => this.setState({ pwd: e.target.value })} />
-            <button onClick={() => this.submit(this.state.email, this.state.pwd)}>send</button>
+            <input
+              type="text"
+              onChange={e => this.setState({ email: e.target.value })}
+            />
+            <input
+              type="password"
+              onChange={e => this.setState({ pwd: e.target.value })}
+            />
+            <button
+              onClick={() =>
+                this.props.submit(this.state.email, this.state.pwd)
+              }
+            >
+              send
+            </button>
           </div>
         )}
       </div>
@@ -48,7 +61,15 @@ class LoginForm extends Component {
 const mapStateToProps = ({ app }) => ({
   isAuthenticated: app.auth.isAuthenticated,
   isLoading: app.auth.isLoading,
-  hasErrors: app.auth.hasErrors
+  hasErrors: app.auth.hasErrors,
+  errorInfo: app.auth.errorInfo
 });
 
-export default connect(mapStateToProps)(LoginForm);
+const mapDispatchToProps = dispatch => ({
+  submit: (username, password) => dispatch(login(username, password))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginForm);
