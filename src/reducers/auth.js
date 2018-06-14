@@ -28,6 +28,7 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         isLoading: false,
+        accessToken: action.payload.access_token,
         user: action.payload
       };
     case LOGIN_FAILURE:
